@@ -73,8 +73,15 @@ module.exports = (testCases, output, { name = 'Tap-Junit', pretty, classname = '
 
   for (let i = 0; i < len; i++) {
     const t = testCases[i]
+
+    if (t.comments) {
+      if (t.comments.substring(0, 2) === '# ') {
+        t.comments = t.comments.slice(2);
+      }
+    }
+
     const caseEl = {
-      '@name': t.name,
+      '@name': [t.id, t.comments, t.name].filter(Boolean).join(' - ').replace(/\r?\n|\r/g, ''),
       '@id': t.id
     }
 
